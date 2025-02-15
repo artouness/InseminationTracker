@@ -31,7 +31,7 @@ function Router() {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-4 md:p-8">
+      <div className="flex-1 p-4 pt-20 md:pt-4 md:p-8">
         <Switch>
           <Route path="/" component={HomePage} />
           <Route path="/farmers" component={FarmersPage} />

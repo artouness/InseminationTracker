@@ -13,7 +13,6 @@ import {
   User,
   Settings,
   LogOut,
-  X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -107,28 +106,27 @@ export function Sidebar() {
 
   if (!user) return null;
 
-  if (isMobile) {
-    return (
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden fixed top-4 left-4 z-40"
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="p-0 w-80 bg-sidebar">
-          <SidebarContent />
-        </SheetContent>
-      </Sheet>
-    );
-  }
-
   return (
-    <div className="hidden md:block w-64 min-h-screen bg-sidebar border-r border-sidebar-border">
-      <SidebarContent />
-    </div>
+    <>
+      {isMobile && (
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="fixed top-4 left-4 z-50 block md:hidden"
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0 w-80">
+            <SidebarContent />
+          </SheetContent>
+        </Sheet>
+      )}
+      <div className="hidden md:block w-64 min-h-screen bg-sidebar border-r border-sidebar-border">
+        <SidebarContent />
+      </div>
+    </>
   );
 }
