@@ -2,8 +2,15 @@ import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
 
-export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
+interface MobileState {
+  isMobile: boolean;
+  isMenuOpen: boolean;
+  toggleMenu: () => void;
+}
+
+export function useMobile(): MobileState {
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
@@ -15,5 +22,9 @@ export function useIsMobile() {
     return () => mql.removeEventListener("change", onChange)
   }, [])
 
-  return !!isMobile
+  const toggleMenu = React.useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
+
+  return { isMobile, isMenuOpen, toggleMenu };
 }
