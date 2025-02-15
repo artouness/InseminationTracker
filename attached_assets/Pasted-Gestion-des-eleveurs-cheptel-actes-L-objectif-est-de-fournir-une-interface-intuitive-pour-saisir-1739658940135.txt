@@ -1,0 +1,169 @@
+Gestion des eleveurs cheptel actes**
+> L'objectif est de fournir une interface intuitive pour saisir et consulter les données, tout en garantissant l'intégrité des données grâce à des relations bien définies entre les tables.
+
+a- Enregistrement des Actes d'Insémination :
+
+    Permettre à l'utilisateur d'ajouter des actes d'insémination en associant chaque acte à une vache existante.
+
+b- Gestion des Éleveurs, Fermes et Vaches :
+
+    Permettre à l'utilisateur d'ajouter, de modifier et de consulter les éleveurs, les fermes et les vaches.
+
+c- Interactions Dynamiques :
+
+    Mettre à jour dynamiquement les listes de vaches en fonction de l'éleveur sélectionné.
+
+    Afficher les noms des éleveurs au lieu des IDs pour une meilleure expérience utilisateur.
+
+d- Intégrité des Données :
+
+    Garantir que chaque acte est associé à une vache existante et que chaque vache est liée à un éleveur et une ferme.
+
+2: Structure de la Base de Données
+a- Table : Éleveurs
+
+-id (clé primaire) : Identifiant unique de l'éleveur.
+
+-nom_complet : Nom complet de l'éleveur.
+
+-adresse : Adresse de l'éleveur.
+
+-telephone : Numéro de téléphone de l'éleveur.
+
+b- Table : Fermes
+
+-id (clé primaire) : Identifiant unique de la ferme.
+
+-proprietaire_id (clé étrangère) : Référence à l'éleveur propriétaire (Éleveurs.id).
+
+-adresse : Adresse de la ferme.
+
+-zone : Zone géographique de la ferme.
+
+-nombre_vaches : Nombre de vaches dans la ferme.
+
+c- Table : Vaches
+
+- num_national (clé primaire) : Numéro national unique de la vache.
+
+- proprietaire_id (clé étrangère) : Référence à l'éleveur propriétaire (Éleveurs.id).
+
+- ferme_id (clé étrangère) : Référence à la ferme où se trouve la vache (Fermes.id).
+
+- race : Race de la vache.
+
+- date_naissance : Date de naissance de la vache.
+
+- date_dernier_velage : Date du dernier vêlage de la vache.
+
+- pere : Numéro national du père de la vache.
+
+- mere : Numéro national de la mère de la vache.
+
+- origine : Origine de la vache.
+
+- race_taureau : Race du taureau utilisé pour l'insémination.
+
+d- Table : Actes
+
+- id (clé primaire) : Identifiant unique de l'acte.
+
+- date_insemination : Date de l'insémination.
+
+- num_national (clé étrangère) : Référence au numéro national de la vache (Vaches.num_national).
+
+3: Relations entre les Tables
+a- Éleveurs → Fermes :
+
+- Un éleveur peut posséder une ou plusieurs fermes.
+
+- Relation : Éleveurs.id → Fermes.proprietaire_id.
+
+b- Fermes → Vaches :
+
+- Une ferme peut contenir plusieurs vaches.
+
+- Relation : Fermes.id → Vaches.ferme_id.
+
+c- Éleveurs → Vaches :
+
+Un éleveur peut posséder plusieurs vaches.
+
+Relation : Éleveurs.id → Vaches.proprietaire_id.
+
+d- Vaches → Actes :
+
+- Une vache peut avoir plusieurs actes d'insémination.
+
+- Relation : Vaches.num_national → Actes.num_national.
+
+4: Interface Utilisateur (pour le frontend)
+a- Sidebar Menu :
+Le menu latéral permet de naviguer entre les catégories et plus :
+en haut du sidebar:
+    - Ajouter un acte
+    - Éleveurs
+    - Fermes
+    - Vaches
+enbas du sidebar:
+    - Profile
+    - Parametre
+
+Chaque catégorie affiche une liste des données déjà enregistrées.
+Un bouton "Ajouter" permet de déplier un formulaire pour ajouter une nouvelle entrée.
+
+5: Fonctionnalité : Ajout d'un Éleveur et d'une Vache pendant l'Enregistrement des Actes
+a- Étapes du Processus
+Sélection de l'Éleveur :
+    - L'utilisateur commence par sélectionner un éleveur dans une liste déroulante.
+    - Si l'éleveur n'existe pas, un bouton "Ajouter un nouvel éleveur" est disponible.
+
+Ajout d'un Nouvel Éleveur :
+    - Lorsque l'utilisateur clique sur "Ajouter un nouvel éleveur", un formulaire  dépliable apparaît pour saisir les informations de l'éleveur (nom, adresse, téléphone).
+    - Après l'enregistrement de l'éleveur, le formulaire se ferme, et le nouvel éleveur est ajouté à la liste déroulante.
+
+Ajout d'une Nouvelle Vache :
+    - Une fois l'éleveur enregistré, l'utilisateur peut ajouter une nouvelle vache via un bouton "Ajouter une nouvelle vache".
+    - Un formulaire dépliable apparaît pour saisir les informations de la vache (numéro national, race, date de naissance, etc.).
+    - Après l'enregistrement de la vache, elle est ajoutée à la liste des vaches disponibles pour l'éleveur sélectionné.
+
+Enregistrement de l'Acte :
+    - Une fois l'éleveur et la vache sélectionnés, l'utilisateur peut enregistrer l'acte d'insémination.
+
+b- Modifications de l'Interface Utilisateur
+*Formulaire pour Ajouter un Acte :
+Champ "Nom de l'éleveur" :
+    - Un select input affiche les noms des éleveurs.
+    - Un bouton "Ajouter un nouvel éleveur" est disponible à côté du champ.
+
+*Champ "Numéro national de la vache" :
+    - Un select input affiche les numéros nationaux des vaches appartenant à l'éleveur sélectionné.
+    - Un bouton "Ajouter une nouvelle vache" est disponible à côté du champ.
+
+*Champ "Date d'insémination" :
+    - Un champ de type date pour saisir la date de l'insémination.
+
+*Formulaire pour Ajouter un Éleveur :
+    - Ce formulaire est caché par défaut et s'affiche lorsque l'utilisateur clique sur "Ajouter un nouvel éleveur".
+    - Champs : Nom complet, Adresse, Téléphone
+    - Bouton "Enregistrer" pour soumettre le formulaire.
+
+* Formulaire pour Ajouter une Vache :
+
+Ce formulaire est caché par défaut et s'affiche lorsque l'utilisateur clique sur "Ajouter une nouvelle vache".
+
+Champs : Numéro national, Race, Date de naissance, Date de dernier vêlage, Père, Mère, Origine, Race taureau
+
+Bouton "Enregistrer" pour soumettre le formulaire.
+
+c- Interactions Dynamiques
+Ajout d'un Éleveur :
+    - Lorsque l'utilisateur clique sur "Ajouter un nouvel éleveur", le formulaire dépliable apparaît.
+    - Après l'enregistrement, le nouvel éleveur est ajouté à la liste déroulante des éleveurs.
+
+Ajout d'une Vache :
+    - Lorsque l'utilisateur clique sur "Ajouter une nouvelle vache", le formulaire dépliable apparaît.
+    - Après l'enregistrement, la nouvelle vache est ajoutée à la liste déroulante des vaches.
+
+>
+> 🔥 **Code clair, structuré et bien commenté avec de bonnes pratiques !
