@@ -1,4 +1,11 @@
-import { type InsertUser, type User, type Farmer, type InsertFarmer, type Farm, type InsertFarm, type Cow, type InsertCow, type Act, type InsertAct } from "@shared/schema";
+import { 
+  users, farmers, farms, cows, acts,
+  type InsertUser, type User, 
+  type Farmer, type InsertFarmer, 
+  type Farm, type InsertFarm, 
+  type Cow, type InsertCow, 
+  type Act, type InsertAct 
+} from "@shared/schema";
 import session from "express-session";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
