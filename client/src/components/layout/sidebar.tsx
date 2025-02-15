@@ -30,7 +30,7 @@ const bottomItems = [
   { icon: Settings, label: "Paramètres", href: "/settings" },
 ];
 
-function SidebarContent() {
+function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const [location] = useLocation();
   const { logoutMutation } = useAuth();
 
@@ -43,7 +43,11 @@ function SidebarContent() {
       <ScrollArea className="flex-1 px-4">
         <nav className="space-y-2">
           {sidebarItems.map((item) => (
-            <Link key={item.href} href={item.href}>
+            <Link 
+              key={item.href} 
+              href={item.href}
+              onClick={() => onNavigate?.()}
+            >
               <Button
                 variant="ghost"
                 className={cn(
@@ -62,7 +66,11 @@ function SidebarContent() {
       <div className="p-4 border-t border-sidebar-border">
         <div className="space-y-2">
           {bottomItems.map((item) => (
-            <Link key={item.href} href={item.href}>
+            <Link 
+              key={item.href} 
+              href={item.href}
+              onClick={() => onNavigate?.()}
+            >
               <Button
                 variant="ghost"
                 className={cn(
@@ -78,7 +86,10 @@ function SidebarContent() {
           <Button
             variant="ghost"
             className="w-full justify-start gap-2 text-destructive"
-            onClick={() => logoutMutation.mutate()}
+            onClick={() => {
+              onNavigate?.();
+              logoutMutation.mutate();
+            }}
           >
             <LogOut className="w-5 h-5" />
             Déconnexion
@@ -92,6 +103,7 @@ function SidebarContent() {
 export function Sidebar() {
   const { user } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -109,7 +121,7 @@ export function Sidebar() {
   return (
     <>
       {isMobile && (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button
               variant="ghost"
@@ -120,7 +132,7 @@ export function Sidebar() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-80">
-            <SidebarContent />
+            <SidebarContent onNavigate={() => setIsOpen(false)} />
           </SheetContent>
         </Sheet>
       )}
