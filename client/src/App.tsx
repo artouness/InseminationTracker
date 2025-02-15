@@ -10,9 +10,9 @@ import FarmersPage from "@/pages/farmers-page";
 import FarmsPage from "@/pages/farms-page";
 import CowsPage from "@/pages/cows-page";
 import InseminationPage from "@/pages/insemination-page";
-import { ProtectedRoute } from "./lib/protected-route";
+import ProfilePage from "@/pages/profile-page";
+import SettingsPage from "@/pages/settings-page";
 import { Sidebar } from "@/components/layout/sidebar";
-
 
 function Router() {
   const { user } = useAuth();
@@ -38,6 +38,8 @@ function Router() {
           <Route path="/farms" component={FarmsPage} />
           <Route path="/cows" component={CowsPage} />
           <Route path="/insemination" component={InseminationPage} />
+          <Route path="/profile" component={ProfilePage} />
+          <Route path="/settings" component={SettingsPage} />
           <Route component={NotFound} />
         </Switch>
       </div>
